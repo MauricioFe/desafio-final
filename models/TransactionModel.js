@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from'mongoose';
 
 let schema = mongoose.Schema({
   description: String,
