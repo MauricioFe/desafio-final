@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 let schema = mongoose.Schema({
   description: String,
@@ -12,6 +12,6 @@ let schema = mongoose.Schema({
   type: String,
 });
 
-const TransactionModel = mongoose.model('transaction', schema, 'transaction');
+const TransactionModel = mongoose.model('transaction', schema);
 
-export { TransactionModel };
+module.exports = TransactionModel;
