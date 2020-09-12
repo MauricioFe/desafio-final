@@ -13,6 +13,13 @@ transactionRouter.get('/', async (req, res) => {
         res.status(500).send(error);
     }
 });
+transactionRouter.post('/', async (req, res) => {
+    try {
+
+    } catch (error) {
+        res.status(500).send(error);
+    }
+})
 
 /*Rotas apenas para o desafio*/
 transactionRouter.get('/numLancamentos', async (req, res) => {
@@ -33,7 +40,7 @@ transactionRouter.get('/receitas', async (req, res) => {
         if (period === undefined)
             res.status(400).send({ "error": "É necessário informar o parâmetro \" period\", cujo o valor deve estár no formato yyyy-mm" });
         const transactions = await transactionService.getReceitas(period);
-        res.send( {receita:transactions})
+        res.send({ receita: transactions })
     } catch (error) {
         res.status(500).send(error);
     }
@@ -44,7 +51,7 @@ transactionRouter.get('/despesas', async (req, res) => {
         if (period === undefined)
             res.status(400).send({ "error": "É necessário informar o parâmetro \" period\", cujo o valor deve estár no formato yyyy-mm" });
         const transactions = await transactionService.getDespesas(period);
-        res.send( {despesas:transactions})
+        res.send({ despesas: transactions })
     } catch (error) {
         res.status(500).send(error);
     }
@@ -57,7 +64,7 @@ transactionRouter.get('/saldo', async (req, res) => {
             res.status(400).send({ "error": "É necessário informar o parâmetro \" period\", cujo o valor deve estár no formato yyyy-mm" });
         const receita = await transactionService.getReceitas(period);
         const despesa = await transactionService.getDespesas(period);
-        res.send( {receita:receita - despesa})
+        res.send({ receita: receita - despesa })
     } catch (error) {
         res.status(500).send(error);
     }

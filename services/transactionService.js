@@ -11,6 +11,21 @@ async function getTransactions(period) {
     return transactions;
 }
 
+async function postTransactions(transaction) {
+    const newTransaction = new TransactionModel(transaction);
+    await newTransaction.save();
+    return newTransaction;
+}
+
+async function putTransaction(id, transaction) {
+    const updatedTransaction = await TransactionModel.findByIdAndUpdate({ _id: id }, transaction, { new: true })
+    return updatedTransaction;
+}
+async function deleteTransaction(id) {
+    const deletedTransaction = await TransactionModel.findByIdAndDelete({ _id: id });
+    return deletedTransaction;
+}
+
 async function getNumLancamentos(period) {
     const transactions = await TransactionModel.count({ yearMonth: period })
     return transactions;
@@ -32,4 +47,4 @@ async function getDespesas(period) {
 
     return despesas;
 }
-module.exports = { getTransactions, getNumLancamentos, getReceitas, getDespesas };
+module.exports = { getTransactions, postTransactions, getNumLancamentos, getReceitas, getDespesas };
