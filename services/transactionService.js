@@ -6,18 +6,30 @@ const ObjectId = mongoose.Types.ObjectId;
 // descobrir esse erro :-/
 const TransactionModel = require('../models/TransactionModel');
 
-async function getTransactions(period){
-    const transactions = await TransactionModel.find({yearMonth:period})
+async function getTransactions(period) {
+    const transactions = await TransactionModel.find({ yearMonth: period })
     return transactions;
 }
 
-async function getNumLancamentos(period){
-    const transactions = await TransactionModel.count({yearMonth:period})
+async function getNumLancamentos(period) {
+    const transactions = await TransactionModel.count({ yearMonth: period })
     return transactions;
 }
-async function getReceitas(period){
-    const transactions = await TransactionModel.find({$and:[{yearMonth:period}, {type:"+"}]})
-    return transactions;
+async function getReceitas(period) {
+    const transactions = await TransactionModel.find({ $and: [{ yearMonth: period }, { type: "+" }] })
+    const receita = transactions.reduce((acc, curr) => {
+        return acc + curr.value;
+    }, 0)
+
+    return receita;
 }
 
-module.exports = {getTransactions, getNumLancamentos, getReceitas};
+async function getDespesas(period) {
+    const transactions = await TransactionModel.find({ $and: [{ yearMonth: period }, { type: "-" }] })
+    const despesas = transactions.reduce((acc, curr) => {
+        return acc + curr.value;
+    }, 0)
+
+    return despesas;
+}
+module.exports = { getTransactions, getNumLancamentos, getReceitas, getDespesas };
