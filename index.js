@@ -1,9 +1,11 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const routes = require('./routes/routes');
-const path = require('path');
-const dotenv = require('dotenv');
+import cors from 'cors'
+import express from 'express';
+import mongoose from 'mongoose';
+import routes from './routes/routes'
+import dotenv from 'dotenv';
+import path from 'path';
+dotenv.config();
+
 
 /**
  * Faz a leitura do arquivo
