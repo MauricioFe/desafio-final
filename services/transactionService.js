@@ -16,7 +16,7 @@ async function getNumLancamentos(period){
     return transactions;
 }
 async function getReceitas(period){
-    const transactions = await TransactionModel.aggregate().match({yearMonth:period}, {type: "+"}).group({_id: null, total:{$sum: "$value"}})
+    const transactions = await TransactionModel.find({$and:[{yearMonth:period}, {type:"+"}]})
     return transactions;
 }
 

@@ -33,7 +33,8 @@ transactionRouter.get('/receitas', async (req, res) => {
         if (period === undefined)
             res.status(400).send({ "error": "É necessário informar o parâmetro \" period\", cujo o valor deve estár no formato yyyy-mm" });
         const transactions = await transactionService.getReceitas(period);
-        res.send({ "lançamentos": transactions.toString() })
+        
+        res.send( transactions)
     } catch (error) {
         res.status(500).send(error);
     }
