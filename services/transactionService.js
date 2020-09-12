@@ -18,11 +18,11 @@ async function postTransactions(transaction) {
 }
 
 async function putTransaction(id, transaction) {
-    const updatedTransaction = await TransactionModel.findByIdAndUpdate({ _id: id }, transaction, { new: true })
+    const updatedTransaction = await TransactionModel.findByIdAndUpdate({ _id: ObjectId(id) }, transaction, { new: true })
     return updatedTransaction;
 }
 async function deleteTransaction(id) {
-    const deletedTransaction = await TransactionModel.findByIdAndDelete({ _id: id });
+    const deletedTransaction = await TransactionModel.findByIdAndDelete({ _id: ObjectId(id) });
     return deletedTransaction;
 }
 
@@ -47,4 +47,4 @@ async function getDespesas(period) {
 
     return despesas;
 }
-module.exports = { getTransactions, postTransactions, getNumLancamentos, getReceitas, getDespesas };
+module.exports = { getTransactions, postTransactions, putTransaction, deleteTransaction, getNumLancamentos, getReceitas, getDespesas };

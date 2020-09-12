@@ -15,9 +15,30 @@ transactionRouter.get('/', async (req, res) => {
 });
 transactionRouter.post('/', async (req, res) => {
     try {
-
+        const newTransaction = await transactionService.postTransactions(req.body);
+        res.send(newTransaction);
     } catch (error) {
         res.status(500).send(error);
+    }
+});
+
+transactionRouter.put('/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const updatedTransaction = await transactionService.putTransaction(id, req.body);
+        res.send(updatedTransaction);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+transactionRouter.delete('/:id', async (req,res)=>{
+    try {
+        const id = req.params.id;
+        const deletedTransaction = await transactionService.deleteTransaction(id);
+        res.send({result: deletedTransaction, message: "Deletado com sucesso"});
+    } catch (error) {
+        
     }
 })
 
