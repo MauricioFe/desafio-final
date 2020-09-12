@@ -7,8 +7,17 @@ const ObjectId = mongoose.Types.ObjectId;
 const TransactionModel = require('../models/TransactionModel');
 
 async function getTransactions(period){
-    const transactions = await TransactionModel.find({yearMonth: period})
+    const transactions = await TransactionModel.find({yearMonth:period})
     return transactions;
 }
 
-module.exports = {getTransactions};
+async function getNumLancamentos(period){
+    const transactions = await TransactionModel.count({yearMonth:period})
+    return transactions;
+}
+async function getReceitas(period){
+    const transactions = await TransactionModel.aggregate().match({yearMonth:period}, {type: "+"}).group({_id: null, total:{$sum: "$value"}})
+    return transactions;
+}
+
+module.exports = {getTransactions, getNumLancamentos, getReceitas};
