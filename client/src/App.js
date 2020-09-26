@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import ListScreen from './components/ListScreen';
 const api = axios.create({ baseURL: 'api' });
 const PERIODS = [
   '2019-01',
@@ -89,35 +90,7 @@ export default function App() {
       <h1 className="center">Desafio Final do Bootcamp Full Stack</h1>
       {
         currentScreen === LIST_SCREEN ?
-          <>
-            <select className="browser-default" value={currentPeriod} onChange={handlePeriodChenge}>{
-              PERIODS.map(period => {
-                return <option key={period}>{period}</option>
-              })
-            }</select>
-            <label htmlFor="filterTransaction" className="active">Filtro</label>
-            <input placeholder="filtro..." id="filterTransaction" onChange={handleFilterChange} type="text" />
-
-            {filteredTransactions.map(transaction => {
-              const currentColor = transaction.type == '+' ? EARNING_COLOR : EXPENSE_COLOR;
-              return (
-                <div key={transaction._id} className="card" style={{
-                  marginBttom: '8px', padding: "8px", backgroundColor: currentColor, display: 'flex',
-                  justifyContent: 'space-between', alignItems: 'center'
-                }}>
-                  <p style={{ marginRight: '10px' }}>
-                    {transaction.yearMonthDay} {' - '}
-                    <strong>{transaction.category}</strong> {' '}
-                    {transaction.description} - {transaction.value}
-                  </p>
-                  <div>
-                    <button style={{ marginRight: '5px' }} className="waves-effect btn" id={transaction._id} onClick={handleUpdatedTransaction}>Editar</button>
-                    <button className="waves-effect btn red darken-4" id={transaction._id} onClick={handleDeletedTransaction}>Excluir</button>
-                  </div>
-                </div>
-              )
-            })}
-          </>
+          <ListScreen />
           : <p>Tela de manutenção</p>
       }
     </div>
