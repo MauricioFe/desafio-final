@@ -44,7 +44,7 @@ const LIST_SCREEN = 0;
 const MAINTENANCE_SCREEN = 1;
 const EXPENSE_COLOR = '#fc5c65';
 const EARNING_COLOR = '#0fb9b1';
-
+const RESOURCE = "/transaction";
 export default function App() {
   const [transactions, setTransections] = useState([]);
   const [filteredTransactions, setFilteredTransactions] = useState([]);
@@ -55,14 +55,23 @@ export default function App() {
     const fetchTransactions = async () => {
       const { data } = await api.get(`/transaction?period=${currentPeriod}`);
       setTransections(data.transactions);
-      setFilteredTransactions(data.transactions);
     };
     fetchTransactions();
-  }, [currentPeriod]);
+  }, [currentPeriod, filteredTransactions, transactions]);
 
+  useEffect(() => {
+    setFilteredTransactions(transactions);
+  }, [transactions]);
 
   const handlePeriodChenge = (event) => {
     setCurrentPeriod(event.target.value);
+  }
+  const handleDeletedTransaction = async (event) => {
+    const id = event.target.id;
+    await api.delete(`${RESOURCE}/${id}`);
+  }
+  const handleUpdatedTransaction = (event) => {
+
   }
   return (
     <div className="container">
@@ -78,12 +87,19 @@ export default function App() {
             {filteredTransactions.map(transaction => {
               const currentColor = transaction.type == '+' ? EARNING_COLOR : EXPENSE_COLOR;
               return (
-                <div className="card" style={{ marginBttom: '8px', padding: "8px", backgroundColor: currentColor }}>
-                  <p key={transaction._id}>
+                <div key={transaction._id}  className="card" style={{
+                  marginBttom: '8px', padding: "8px", backgroundColor: currentColor, display: 'flex',
+                  justifyContent: 'space-between', alignItems: 'center'
+                }}>
+                  <p style={{ marginRight: '10px' }}>
                     {transaction.yearMonthDay} {' - '}
                     <strong>{transaction.category}</strong> {' '}
                     {transaction.description} - {transaction.value}
                   </p>
+                  <div>
+                    <button  style={{ marginRight: '5px' }} className="waves-effect btn" id={transaction._id} onClick={handleUpdatedTransaction}>Editar</button>
+                    <button  className="waves-effect btn red darken-4" id={transaction._id} onClick={handleDeletedTransaction}>Excluir</button>
+                  </div>
                 </div>
               )
             })}
