@@ -26,8 +26,8 @@ export default function ListScreen({ transactions, periods, currentPeriod, onDel
                             {transaction.description} - {transaction.value}
                         </p>
                         <div>
-                            <button style={{ marginRight: '5px' }} className="waves-effect btn" id={transaction._id} onClick={onUpdateTransaction}>Editar</button>
-                            <button className="waves-effect btn red darken-4" id={transaction._id} onClick={onDeleteTransaction}>Excluir</button>
+                            <button style={{ marginRight: '5px' }} className="waves-effect btn" id={transaction._id} onClick={onUpdateTransaction}><i class="large material-icons">edit</i></button>
+                            <button className="waves-effect btn red darken-4" id={transaction._id} onClick={onDeleteTransaction}><i class="large material-icons">delete</i></button>
                         </div>
                     </div>
                 )
