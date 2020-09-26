@@ -16,6 +16,6 @@ export default function App() {
   }, []);
   console.log(transactions);
   return (
-    <h1 className="center">Desafio Final do Bootcamp Full Stack</h1>
+    <h1 className="right">Desafio Final do Bootcamp Full Stack</h1>
   );
 }
