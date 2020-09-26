@@ -1,17 +1,19 @@
 import React from 'react'
-
-export default function ListScreen() {
+const EXPENSE_COLOR = '#fc5c65';
+const EARNING_COLOR = '#0fb9b1';
+export default function ListScreen({ transactions, periods, currentPeriod, onDeleteTransaction, onUpdateTransaction,
+    onFilterChange, onPeriodChange }) {
     return (
         <>
-            <select className="browser-default" value={currentPeriod} onChange={handlePeriodChenge}>{
-                PERIODS.map(period => {
+            <select className="browser-default" value={currentPeriod} onChange={onPeriodChange}>{
+                periods.map(period => {
                     return <option key={period}>{period}</option>
                 })
             }</select>
             <label htmlFor="filterTransaction" className="active">Filtro</label>
-            <input placeholder="filtro..." id="filterTransaction" onChange={handleFilterChange} type="text" />
+            <input placeholder="filtro..." id="filterTransaction" onChange={onFilterChange} type="text" />
 
-            {filteredTransactions.map(transaction => {
+            {transactions.map(transaction => {
                 const currentColor = transaction.type == '+' ? EARNING_COLOR : EXPENSE_COLOR;
                 return (
                     <div key={transaction._id} className="card" style={{
@@ -24,8 +26,8 @@ export default function ListScreen() {
                             {transaction.description} - {transaction.value}
                         </p>
                         <div>
-                            <button style={{ marginRight: '5px' }} className="waves-effect btn" id={transaction._id} onClick={handleUpdatedTransaction}>Editar</button>
-                            <button className="waves-effect btn red darken-4" id={transaction._id} onClick={handleDeletedTransaction}>Excluir</button>
+                            <button style={{ marginRight: '5px' }} className="waves-effect btn" id={transaction._id} onClick={onUpdateTransaction}>Editar</button>
+                            <button className="waves-effect btn red darken-4" id={transaction._id} onClick={onDeleteTransaction}>Excluir</button>
                         </div>
                     </div>
                 )

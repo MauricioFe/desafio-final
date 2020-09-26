@@ -43,11 +43,9 @@ const PERIODS = [
 
 const LIST_SCREEN = 0;
 const MAINTENANCE_SCREEN = 1;
-const EXPENSE_COLOR = '#fc5c65';
-const EARNING_COLOR = '#0fb9b1';
 const RESOURCE = "/transaction";
 export default function App() {
-  const [transactions, setTransections] = useState([]);
+  const [transactions, setTransactions] = useState([]);
   const [filteredTransactions, setFilteredTransactions] = useState([]);
   const [currentPeriod, setCurrentPeriod] = useState(PERIODS[0]);
   const [currentScreen, setCurrentScreem] = useState(LIST_SCREEN);
@@ -56,14 +54,14 @@ export default function App() {
   useEffect(() => {
     const fetchTransactions = async () => {
       const { data } = await api.get(`/transaction?period=${currentPeriod}`);
-      setTransections(data.transactions);
+      setTransactions(data.transactions);
     };
     fetchTransactions();
-  }, [currentPeriod, filteredTransactions, transactions]);
+  }, [currentPeriod]);
 
   useEffect(() => {
     let newFilteredTransactions = [...transactions];
-    if(filteredText.trim() !== ''){
+    if (filteredText.trim() !== '') {
       newFilteredTransactions = newFilteredTransactions.filter(transaction => {
         return transaction.description.toLowerCase().includes(filteredText);
       });
@@ -77,6 +75,11 @@ export default function App() {
   const handleDeletedTransaction = async (event) => {
     const id = event.target.id;
     await api.delete(`${RESOURCE}/${id}`);
+
+    const newTransactions = transactions.filter(transaction => {
+      return transaction._id !== id;
+    });
+    setTransactions(newTransactions);
   }
   const handleUpdatedTransaction = (event) => {
 
@@ -90,7 +93,8 @@ export default function App() {
       <h1 className="center">Desafio Final do Bootcamp Full Stack</h1>
       {
         currentScreen === LIST_SCREEN ?
-          <ListScreen />
+          <ListScreen transactions={filteredTransactions} periods={PERIODS} currentPeriod={currentPeriod} filteredText={filteredText}
+            onDeleteTransaction={handleDeletedTransaction} onFilterChange={handleFilterChange} onPeriodChange={handlePeriodChenge} />
           : <p>Tela de manutenção</p>
       }
     </div>
