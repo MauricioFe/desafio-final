@@ -50,6 +50,7 @@ export default function App() {
   const [filteredTransactions, setFilteredTransactions] = useState([]);
   const [currentPeriod, setCurrentPeriod] = useState(PERIODS[0]);
   const [currentScreen, setCurrentScreem] = useState(LIST_SCREEN);
+  const [filteredText, setFilteredText] = useState("");
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -60,8 +61,14 @@ export default function App() {
   }, [currentPeriod, filteredTransactions, transactions]);
 
   useEffect(() => {
-    setFilteredTransactions(transactions);
-  }, [transactions]);
+    let newFilteredTransactions = [...transactions];
+    if(filteredText.trim() !== ''){
+      newFilteredTransactions = newFilteredTransactions.filter(transaction => {
+        return transaction.description.toLowerCase().includes(filteredText);
+      });
+    }
+    setFilteredTransactions(newFilteredTransactions);
+  }, [transactions, filteredText]);
 
   const handlePeriodChenge = (event) => {
     setCurrentPeriod(event.target.value);
@@ -72,6 +79,10 @@ export default function App() {
   }
   const handleUpdatedTransaction = (event) => {
 
+  }
+  const handleFilterChange = (event) => {
+    const text = event.target.value.trim();
+    setFilteredText(text.toLowerCase());
   }
   return (
     <div className="container">
@@ -84,10 +95,13 @@ export default function App() {
                 return <option key={period}>{period}</option>
               })
             }</select>
+            <label htmlFor="filterTransaction" className="active">Filtro</label>
+            <input placeholder="filtro..." id="filterTransaction" onChange={handleFilterChange} type="text" />
+
             {filteredTransactions.map(transaction => {
               const currentColor = transaction.type == '+' ? EARNING_COLOR : EXPENSE_COLOR;
               return (
-                <div key={transaction._id}  className="card" style={{
+                <div key={transaction._id} className="card" style={{
                   marginBttom: '8px', padding: "8px", backgroundColor: currentColor, display: 'flex',
                   justifyContent: 'space-between', alignItems: 'center'
                 }}>
@@ -97,8 +111,8 @@ export default function App() {
                     {transaction.description} - {transaction.value}
                   </p>
                   <div>
-                    <button  style={{ marginRight: '5px' }} className="waves-effect btn" id={transaction._id} onClick={handleUpdatedTransaction}>Editar</button>
-                    <button  className="waves-effect btn red darken-4" id={transaction._id} onClick={handleDeletedTransaction}>Excluir</button>
+                    <button style={{ marginRight: '5px' }} className="waves-effect btn" id={transaction._id} onClick={handleUpdatedTransaction}>Editar</button>
+                    <button className="waves-effect btn red darken-4" id={transaction._id} onClick={handleDeletedTransaction}>Excluir</button>
                   </div>
                 </div>
               )
