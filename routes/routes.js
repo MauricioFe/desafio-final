@@ -74,16 +74,6 @@ transactionRouter.delete('/:id', async (req, res) => {
 })
 
 /*Rotas apenas para o desafio*/
-transactionRouter.patch('/corrigeErro', async (req, res) => {
-    try {
-        const transactions = await transactionService.patchErro();
-        res.send("Update ok")
-    } catch (error) {
-        res.status(500).send(error);
-    }
-});
-
-
 
 transactionRouter.get('/numLancamentos', async (req, res) => {
     try {

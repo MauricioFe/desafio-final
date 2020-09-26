@@ -22,11 +22,6 @@ async function putTransaction(id, transaction) {
     return updatedTransaction;
 }
 
-async function patchErro () {
-    const updatedTransaction = await TransactionModel.updateMany({category: "Receita"}, {type: '+'})
-    return updatedTransaction;
-}
-
 async function deleteTransaction(id) {
     const deletedTransaction = await TransactionModel.findByIdAndDelete({ _id: ObjectId(id) });
     return deletedTransaction;
@@ -53,13 +48,12 @@ async function getDespesas(period) {
 
     return despesas;
 }
-module.exports = { 
-    getTransactions, 
-    postTransactions, 
-    putTransaction, 
+module.exports = {
+    getTransactions,
+    postTransactions,
+    putTransaction,
     deleteTransaction,
-    getNumLancamentos, 
-    getReceitas, 
+    getNumLancamentos,
+    getReceitas,
     getDespesas,
-    patchErro,
- };
+};
