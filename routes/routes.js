@@ -8,14 +8,31 @@ transactionRouter.get('/', async (req, res) => {
         if (period === undefined)
             res.status(400).send({ "error": "É necessário informar o parâmetro \" period\", cujo o valor deve estár no formato yyyy-mm" });
         const transactions = await transactionService.getTransactions(period);
-        res.send(transactions)
+        res.send({
+            length: transactions.length,
+            transactions
+        })
     } catch (error) {
         res.status(500).send(error);
     }
 });
 transactionRouter.post('/', async (req, res) => {
     try {
-        const newTransaction = await transactionService.postTransactions(req.body);
+        const { description, value, category, year, month, day, type } = req.body;
+        const yearMonth = `${year}-${month.toString().padStart(2, '0')}`;
+        const yearMonthDay = `${yearMonth}-${day.toString().padStart(2, '0')}`;
+        const postTransactions = {
+            description,
+            value,
+            category,
+            year,
+            month,
+            day,
+            yearMonth,
+            yearMonthDay,
+            type
+        }
+        const newTransaction = await transactionService.postTransactions(postTransactions);
         res.send(newTransaction);
     } catch (error) {
         res.status(500).send(error);
@@ -25,20 +42,34 @@ transactionRouter.post('/', async (req, res) => {
 transactionRouter.put('/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        const updatedTransaction = await transactionService.putTransaction(id, req.body);
+        const { description, value, category, year, month, day, type } = req.body;
+        const yearMonth = `${year}-${month.toString().padStart(2, '0')}`;
+        const yearMonthDay = `${yearMonth}-${day.toString().padStart(2, '0')}`;
+        const putTransactions = {
+            description,
+            value,
+            category,
+            year,
+            month,
+            day,
+            yearMonth,
+            yearMonthDay,
+            type
+        }
+        const updatedTransaction = await transactionService.putTransaction(id, putTransactions);
         res.send(updatedTransaction);
     } catch (error) {
         res.status(500).send(error);
     }
 });
 
-transactionRouter.delete('/:id', async (req,res)=>{
+transactionRouter.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const deletedTransaction = await transactionService.deleteTransaction(id);
-        res.send({result: deletedTransaction, message: "Deletado com sucesso"});
+        res.send({ result: deletedTransaction, message: "Deletado com sucesso" });
     } catch (error) {
-        
+
     }
 })
 
