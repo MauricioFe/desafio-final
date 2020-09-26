@@ -42,6 +42,7 @@ const PERIODS = [
 export default function App() {
   const [transactions, setTransections] = useState([]);
   const [filteredTransactions, setFilteredTransactions] = useState([]);
+  const [currentPeriod, setCurrentPeriod] = useState(PERIODS[0]);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -51,12 +52,19 @@ export default function App() {
     };
     fetchTransactions();
   }, []);
-  console.log(transactions);
+  const handlePeriodChenge = (event) => {
+    setCurrentPeriod(event.target.value);
+  }
   return (
     <div className="container">
       <h1 className="center">Desafio Final do Bootcamp Full Stack</h1>
+      <select className="browser-default" value={currentPeriod} onChange={handlePeriodChenge}>{
+        PERIODS.map(period => {
+          return <option key={period}>{period}</option>
+        })
+      }</select>
       {filteredTransactions.map(transaction => {
-          return <p key={transaction._id}>{transaction.description}</p>
+        return <p key={transaction._id}>{transaction.description}</p>
       })}
     </div>
   );
