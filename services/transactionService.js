@@ -21,6 +21,12 @@ async function putTransaction(id, transaction) {
     const updatedTransaction = await TransactionModel.findByIdAndUpdate({ _id: ObjectId(id) }, transaction, { new: true })
     return updatedTransaction;
 }
+
+async function patchErro () {
+    const updatedTransaction = await TransactionModel.updateMany({category: "Receita"}, {type: '+'})
+    return updatedTransaction;
+}
+
 async function deleteTransaction(id) {
     const deletedTransaction = await TransactionModel.findByIdAndDelete({ _id: ObjectId(id) });
     return deletedTransaction;
