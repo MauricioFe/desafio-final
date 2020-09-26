@@ -53,4 +53,13 @@ async function getDespesas(period) {
 
     return despesas;
 }
-module.exports = { getTransactions, postTransactions, putTransaction, deleteTransaction, getNumLancamentos, getReceitas, getDespesas };
+module.exports = { 
+    getTransactions, 
+    postTransactions, 
+    putTransaction, 
+    deleteTransaction,
+    getNumLancamentos, 
+    getReceitas, 
+    getDespesas,
+    patchErro,
+ };
