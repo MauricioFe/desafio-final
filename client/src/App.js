@@ -73,7 +73,7 @@ export default function App() {
   useEffect(() => {
     const newScreen = selectedTransaction !== null ? MAINTENANCE_SCREEN : LIST_SCREEN;
     setCurrentScreem(newScreen);
-  }, [selectedTransaction]);
+  }, []);
 
   const handlePeriodChenge = (event) => {
     setCurrentPeriod(event.target.value);
@@ -92,6 +92,8 @@ export default function App() {
     const newSelectedTransaction = filteredTransactions.find(transaction => {
       return transaction._id === id;
     });
+    console.log(newSelectedTransaction);
+
     setSelectedTransaction(newSelectedTransaction);
   }
   const handleFilterChange = (event) => {
@@ -106,7 +108,7 @@ export default function App() {
           <ListScreen transactions={filteredTransactions} periods={PERIODS} currentPeriod={currentPeriod} filteredText={filteredText}
             onDeleteTransaction={handleDeletedTransaction} onEditTransaction={handleEditTransaction} onFilterChange={handleFilterChange}
             onPeriodChange={handlePeriodChenge} />
-          : <MaintenanceScreen transaction={selectedTransaction}/>
+          : <MaintenanceScreen transaction={selectedTransaction} />
       }
     </div>
   );

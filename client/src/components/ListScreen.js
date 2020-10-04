@@ -14,7 +14,7 @@ export default function ListScreen({ transactions, periods, currentPeriod, onDel
             <input placeholder="filtro..." id="filterTransaction" onChange={onFilterChange} type="text" />
 
             {transactions.map(transaction => {
-                const currentColor = transaction.type == '+' ? EARNING_COLOR : EXPENSE_COLOR;
+                const currentColor = transaction.type === '+' ? EARNING_COLOR : EXPENSE_COLOR;
                 return (
                     <div key={transaction._id} className="card" style={{
                         marginBttom: '8px', padding: "8px", backgroundColor: currentColor, display: 'flex',
@@ -26,8 +26,8 @@ export default function ListScreen({ transactions, periods, currentPeriod, onDel
                             {transaction.description} - {transaction.value}
                         </p>
                         <div>
-                            <button style={{ marginRight: '5px' }} className="waves-effect btn" id={transaction._id} onClick={onEditTransaction}><i class="large material-icons">edit</i></button>
-                            <button className="waves-effect btn red darken-4" id={transaction._id} onClick={onDeleteTransaction}><i class="large material-icons">delete</i></button>
+                            <button style={{ marginRight: '5px' }} className="waves-effect btn" id={transaction._id} onClick={onEditTransaction}><i id={transaction._id} className="large material-icons">edit</i></button>
+                            <button className="waves-effect btn red darken-4" id={transaction._id} onClick={onDeleteTransaction}><i id={transaction._id} className="large material-icons">delete</i></button>
                         </div>
                     </div>
                 )

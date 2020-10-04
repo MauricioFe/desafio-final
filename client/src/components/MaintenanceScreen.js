@@ -8,6 +8,7 @@ export default function MaintenanceScreen({ transaction }) {
     const [type, setType] = useState('-');
 
     useEffect(() => {
+        console.log(transaction);
         if (!transaction) {
             return;
         }
@@ -37,18 +38,7 @@ export default function MaintenanceScreen({ transaction }) {
                 <input value={value} id="value" type="number" onChange={handleValueChange} />
                 <label htmlFor="value" className="active">Valor</label>
             </div>
-            <div className="input-field">
-                <input value={description} id="description" type="text" onChange={handleDescriptionChange} />
-                <label htmlFor="description" className="active">Descrição</label>
-            </div>
-            <div className="input-field">
-                <input value={description} id="description" type="text" onChange={handleDescriptionChange} />
-                <label htmlFor="description" className="active">Descrição</label>
-            </div>
-            <div className="input-field">
-                <input value={description} id="description" type="text" onChange={handleDescriptionChange} />
-                <label htmlFor="description" className="active">Descrição</label>
-            </div>
+            
         </div>
     )
 }
