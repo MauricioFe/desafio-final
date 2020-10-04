@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ListScreen from './components/ListScreen';
+import MaintenanceScreen from './components/MaintenanceScreen';
 const api = axios.create({ baseURL: 'api' });
 const PERIODS = [
   '2019-01',
@@ -50,6 +51,7 @@ export default function App() {
   const [currentPeriod, setCurrentPeriod] = useState(PERIODS[0]);
   const [currentScreen, setCurrentScreem] = useState(LIST_SCREEN);
   const [filteredText, setFilteredText] = useState("");
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -68,6 +70,10 @@ export default function App() {
     }
     setFilteredTransactions(newFilteredTransactions);
   }, [transactions, filteredText]);
+  useEffect(() => {
+    const newScreen = selectedTransaction !== null ? MAINTENANCE_SCREEN : LIST_SCREEN;
+    setCurrentScreem(newScreen);
+  }, [selectedTransaction]);
 
   const handlePeriodChenge = (event) => {
     setCurrentPeriod(event.target.value);
@@ -81,8 +87,12 @@ export default function App() {
     });
     setTransactions(newTransactions);
   }
-  const handleUpdatedTransaction = (event) => {
-
+  const handleEditTransaction = (event) => {
+    const id = event.target.id;
+    const newSelectedTransaction = filteredTransactions.find(transaction => {
+      return transaction._id === id;
+    });
+    setSelectedTransaction(newSelectedTransaction);
   }
   const handleFilterChange = (event) => {
     const text = event.target.value.trim();
@@ -94,8 +104,9 @@ export default function App() {
       {
         currentScreen === LIST_SCREEN ?
           <ListScreen transactions={filteredTransactions} periods={PERIODS} currentPeriod={currentPeriod} filteredText={filteredText}
-            onDeleteTransaction={handleDeletedTransaction} onFilterChange={handleFilterChange} onPeriodChange={handlePeriodChenge} />
-          : <p>Tela de manutenção</p>
+            onDeleteTransaction={handleDeletedTransaction} onEditTransaction={handleEditTransaction} onFilterChange={handleFilterChange}
+            onPeriodChange={handlePeriodChenge} />
+          : <MaintenanceScreen transaction={selectedTransaction}/>
       }
     </div>
   );
