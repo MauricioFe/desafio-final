@@ -27,7 +27,16 @@ export default function MaintenanceScreen({ transaction }) {
     const handleValueChange = (event) => {
         const newValue = +event.target.value;
         setValue(newValue);
+    };  
+    const handleCategoryChange = (event) => {
+        const newCategory = +event.target.value;
+        setValue(newCategory);
+    };  
+    const handleDateChange = (event) => {
+        const newDate = +event.target.value;
+        setValue(newDate);
     };
+    
     return (
         <div>
             <div className="input-field">
@@ -37,6 +46,14 @@ export default function MaintenanceScreen({ transaction }) {
             <div className="input-field">
                 <input value={value} id="value" type="number" onChange={handleValueChange} />
                 <label htmlFor="value" className="active">Valor</label>
+            </div>
+            <div className="input-field">
+                <input value={category} id="category" type="text" onChange={handleCategoryChange} />
+                <label htmlFor="category" className="active">Categoria</label>
+            </div>
+            <div className="input-field">
+                <input value={date} id="date" type="date" onChange={handleDateChange} />
+                <label htmlFor="date" className="active">Data</label>
             </div>
             
         </div>

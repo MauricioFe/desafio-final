@@ -73,7 +73,7 @@ export default function App() {
   useEffect(() => {
     const newScreen = selectedTransaction !== null ? MAINTENANCE_SCREEN : LIST_SCREEN;
     setCurrentScreem(newScreen);
-  }, []);
+  }, [selectedTransaction]);
 
   const handlePeriodChenge = (event) => {
     setCurrentPeriod(event.target.value);
