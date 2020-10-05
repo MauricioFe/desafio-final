@@ -77,7 +77,7 @@ export default function App() {
 
   const handlePeriodChenge = (event) => {
     setCurrentPeriod(event.target.value);
-  }
+  };
   const handleDeletedTransaction = async (event) => {
     const id = event.target.id;
     await api.delete(`${RESOURCE}/${id}`);
@@ -86,21 +86,36 @@ export default function App() {
       return transaction._id !== id;
     });
     setTransactions(newTransactions);
-  }
+  };
   const handleEditTransaction = (event) => {
     const id = event.target.id;
     const newSelectedTransaction = filteredTransactions.find(transaction => {
       return transaction._id === id;
     });
-    console.log(newSelectedTransaction);
-
     setSelectedTransaction(newSelectedTransaction);
-  }
+  };
   const handleFilterChange = (event) => {
     const text = event.target.value.trim();
     setFilteredText(text.toLowerCase());
-  }
-  const handleCancelMaintenance = ()=>{
+  };
+  const handleCancelMaintenance = () => {
+    setSelectedTransaction(null);
+  };
+  const handleSaveMaintenance = (newTransaction) => {
+    const { _id } = newTransaction;
+    const editedTransaction = {
+      ...newTransaction,
+      year: Number(newTransaction.yearMonthDay.substring(0, 4)),
+      month: Number(newTransaction.yearMonthDay.substring(5, 7)),
+      day: Number(newTransaction.yearMonthDay.substring(8, 10)),
+    }
+    api.put(`${RESOURCE}/${_id}`, editedTransaction);
+    const newTransactions = [...transactions];
+    const index = newTransactions.findIndex(transaction => {
+      return transaction._id === editedTransaction._id;
+    })
+    newTransactions[index] = editedTransaction;
+    setTransactions(newTransactions);
     setSelectedTransaction(null);
   }
   return (
@@ -111,7 +126,7 @@ export default function App() {
           <ListScreen transactions={filteredTransactions} periods={PERIODS} currentPeriod={currentPeriod} filteredText={filteredText}
             onDeleteTransaction={handleDeletedTransaction} onEditTransaction={handleEditTransaction} onFilterChange={handleFilterChange}
             onPeriodChange={handlePeriodChenge} />
-          : <MaintenanceScreen transaction={selectedTransaction} onCancel={handleCancelMaintenance}/>
+          : <MaintenanceScreen transaction={selectedTransaction} onCancel={handleCancelMaintenance} onSave={handleSaveMaintenance} />
       }
     </div>
   );

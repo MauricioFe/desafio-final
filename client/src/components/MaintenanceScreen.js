@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export default function MaintenanceScreen({ transaction, onCancel }) {
+export default function MaintenanceScreen({ transaction, onCancel, onSave }) {
     const [description, setDescription] = useState('');
     const [value, setValue] = useState(0);
     const [category, setCategory] = useState('');
@@ -8,7 +8,6 @@ export default function MaintenanceScreen({ transaction, onCancel }) {
     const [type, setType] = useState('-');
 
     useEffect(() => {
-        console.log(transaction);
         if (!transaction) {
             return;
         }
@@ -18,7 +17,7 @@ export default function MaintenanceScreen({ transaction, onCancel }) {
         setCategory(category);
         setDate(yearMonthDay);
         setType(type);
-    })
+    },[transaction])
 
     const handleDescriptionChange = (event) => {
         const newDescription = event.target.value.trim();
@@ -30,22 +29,30 @@ export default function MaintenanceScreen({ transaction, onCancel }) {
     };
     const handleCategoryChange = (event) => {
         const newCategory = +event.target.value;
-        setValue(newCategory);
+        setCategory(newCategory);
     };
     const handleDateChange = (event) => {
         const newDate = event.target.value;
-        setValue(newDate);
+        setDate(newDate);
     };
     const handleTypeChange = (event) => {
         const newType = event.target.value;
-        setValue(newType);
-    };    
+        setType(newType);
+    };
     const handleCancelClick = () => {
         onCancel();
     };
-
-
-
+    const handleSaveClick = () => {
+        const newTransaction = {
+            _id: transaction._id,
+            description,
+            value,
+            type,
+            yearMonthDay: date,
+            category
+        }
+        onSave(newTransaction);
+    };
     return (
         <div>
             <div>
@@ -78,8 +85,8 @@ export default function MaintenanceScreen({ transaction, onCancel }) {
                 <input value={date} id="date" type="date" onChange={handleDateChange} />
                 <label htmlFor="date" className="active">Data</label>
             </div>
-            <button className="waves-effect waves-light btn">Salvar</button>
-            <button style={{marginLeft: '25px'}} onClick={handleCancelClick}  className="waves-effect waves-light btn red darken-4">Cancelar</button>
+            <button className="waves-effect waves-light btn" onClick={handleSaveClick}>Salvar</button>
+            <button style={{ marginLeft: '25px' }} onClick={handleCancelClick} className="waves-effect waves-light btn red darken-4">Cancelar</button>
         </div>
     )
 }
