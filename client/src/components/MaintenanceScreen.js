@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export default function MaintenanceScreen({ transaction }) {
+export default function MaintenanceScreen({ transaction, onCancel }) {
     const [description, setDescription] = useState('');
     const [value, setValue] = useState(0);
     const [category, setCategory] = useState('');
@@ -39,7 +39,12 @@ export default function MaintenanceScreen({ transaction }) {
     const handleTypeChange = (event) => {
         const newType = event.target.value;
         setValue(newType);
+    };    
+    const handleCancelClick = () => {
+        onCancel();
     };
+
+
 
     return (
         <div>
@@ -74,7 +79,7 @@ export default function MaintenanceScreen({ transaction }) {
                 <label htmlFor="date" className="active">Data</label>
             </div>
             <button className="waves-effect waves-light btn">Salvar</button>
-            <button style={{marginLeft: '25px'}}  className="waves-effect waves-light btn red darken-4">Cancelar</button>
+            <button style={{marginLeft: '25px'}} onClick={handleCancelClick}  className="waves-effect waves-light btn red darken-4">Cancelar</button>
         </div>
     )
 }

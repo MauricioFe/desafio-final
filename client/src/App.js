@@ -100,6 +100,9 @@ export default function App() {
     const text = event.target.value.trim();
     setFilteredText(text.toLowerCase());
   }
+  const handleCancelMaintenance = ()=>{
+    setSelectedTransaction(null);
+  }
   return (
     <div className="container">
       <h1 className="center">Desafio Final do Bootcamp Full Stack</h1>
@@ -108,7 +111,7 @@ export default function App() {
           <ListScreen transactions={filteredTransactions} periods={PERIODS} currentPeriod={currentPeriod} filteredText={filteredText}
             onDeleteTransaction={handleDeletedTransaction} onEditTransaction={handleEditTransaction} onFilterChange={handleFilterChange}
             onPeriodChange={handlePeriodChenge} />
-          : <MaintenanceScreen transaction={selectedTransaction} />
+          : <MaintenanceScreen transaction={selectedTransaction} onCancel={handleCancelMaintenance}/>
       }
     </div>
   );
