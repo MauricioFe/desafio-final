@@ -27,18 +27,36 @@ export default function MaintenanceScreen({ transaction }) {
     const handleValueChange = (event) => {
         const newValue = +event.target.value;
         setValue(newValue);
-    };  
+    };
     const handleCategoryChange = (event) => {
         const newCategory = +event.target.value;
         setValue(newCategory);
-    };  
+    };
     const handleDateChange = (event) => {
-        const newDate = +event.target.value;
+        const newDate = event.target.value;
         setValue(newDate);
     };
-    
+    const handleTypeChange = (event) => {
+        const newType = event.target.value;
+        setValue(newType);
+    };
+
     return (
         <div>
+            <div>
+                <p>
+                    <label>
+                        <input name="type-radio" type="radio" checked={type === '-'} onChange={handleTypeChange} value='-' />
+                        <span>Despesa</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="type-radio" type="radio" checked={type === '+'} onChange={handleTypeChange} value='+' />
+                        <span>Receita</span>
+                    </label>
+                </p>
+            </div>
             <div className="input-field">
                 <input value={description} id="description" type="text" onChange={handleDescriptionChange} />
                 <label htmlFor="description" className="active">Descrição</label>
@@ -55,7 +73,8 @@ export default function MaintenanceScreen({ transaction }) {
                 <input value={date} id="date" type="date" onChange={handleDateChange} />
                 <label htmlFor="date" className="active">Data</label>
             </div>
-            
+            <button className="waves-effect waves-light btn">Salvar</button>
+            <button style={{marginLeft: '25px'}}  className="waves-effect waves-light btn red darken-4">Cancelar</button>
         </div>
     )
 }
