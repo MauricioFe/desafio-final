@@ -52,6 +52,7 @@ export default function App() {
   const [currentScreen, setCurrentScreem] = useState(LIST_SCREEN);
   const [filteredText, setFilteredText] = useState("");
   const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [newTransaction, setNewTransaction] = useState(null);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -71,9 +72,9 @@ export default function App() {
     setFilteredTransactions(newFilteredTransactions);
   }, [transactions, filteredText]);
   useEffect(() => {
-    const newScreen = selectedTransaction !== null ? MAINTENANCE_SCREEN : LIST_SCREEN;
+    const newScreen = (selectedTransaction !== null || newTransaction) ? MAINTENANCE_SCREEN : LIST_SCREEN;
     setCurrentScreem(newScreen);
-  }, [selectedTransaction]);
+  }, [selectedTransaction, newTransaction]);
 
   const handlePeriodChenge = (event) => {
     setCurrentPeriod(event.target.value);
@@ -117,7 +118,11 @@ export default function App() {
     newTransactions[index] = editedTransaction;
     setTransactions(newTransactions);
     setSelectedTransaction(null);
-  }
+  };
+
+  const handleNewTransaction = () => {
+    setNewTransaction(true);
+  };
   return (
     <div className="container">
       <h1 className="center">Desafio Final do Bootcamp Full Stack</h1>
@@ -125,7 +130,7 @@ export default function App() {
         currentScreen === LIST_SCREEN ?
           <ListScreen transactions={filteredTransactions} periods={PERIODS} currentPeriod={currentPeriod} filteredText={filteredText}
             onDeleteTransaction={handleDeletedTransaction} onEditTransaction={handleEditTransaction} onFilterChange={handleFilterChange}
-            onPeriodChange={handlePeriodChenge} />
+            onPeriodChange={handlePeriodChenge} onNewTransaction={handleNewTransaction} />
           : <MaintenanceScreen transaction={selectedTransaction} onCancel={handleCancelMaintenance} onSave={handleSaveMaintenance} />
       }
     </div>

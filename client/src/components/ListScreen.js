@@ -2,7 +2,7 @@ import React from 'react'
 const EXPENSE_COLOR = '#fc5c65';
 const EARNING_COLOR = '#0fb9b1';
 export default function ListScreen({ transactions, periods, currentPeriod, onDeleteTransaction, onEditTransaction,
-    onFilterChange, onPeriodChange }) {
+    onFilterChange, onPeriodChange, onNewTransaction }) {
     return (
         <>
             <select className="browser-default" value={currentPeriod} onChange={onPeriodChange}>{
@@ -12,6 +12,14 @@ export default function ListScreen({ transactions, periods, currentPeriod, onDel
             }</select>
             <label htmlFor="filterTransaction" className="active">Filtro</label>
             <input placeholder="filtro..." id="filterTransaction" onChange={onFilterChange} type="text" />
+            <div>
+                <button style={{
+                    marginRight: '5px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                }} className="waves-effect btn" onClick={onNewTransaction} ><i className="large material-icons" style={{marginRight:'15px'}}>add</i>Nova Transação</button>
+            </div>
 
             {transactions.map(transaction => {
                 const currentColor = transaction.type === '+' ? EARNING_COLOR : EXPENSE_COLOR;
