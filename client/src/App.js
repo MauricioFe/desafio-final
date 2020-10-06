@@ -52,7 +52,7 @@ export default function App() {
   const [currentScreen, setCurrentScreem] = useState(LIST_SCREEN);
   const [filteredText, setFilteredText] = useState("");
   const [selectedTransaction, setSelectedTransaction] = useState(null);
-  const [newTransaction, setNewTransaction] = useState(null);
+  const [newTransaction, setNewTransaction] = useState(false);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -100,24 +100,41 @@ export default function App() {
     setFilteredText(text.toLowerCase());
   };
   const handleCancelMaintenance = () => {
+    setNewTransaction(false);
     setSelectedTransaction(null);
   };
-  const handleSaveMaintenance = (newTransaction) => {
+  const handleSaveMaintenance = async (newTransaction) => {
     const { _id } = newTransaction;
-    const editedTransaction = {
-      ...newTransaction,
-      year: Number(newTransaction.yearMonthDay.substring(0, 4)),
-      month: Number(newTransaction.yearMonthDay.substring(5, 7)),
-      day: Number(newTransaction.yearMonthDay.substring(8, 10)),
+    if (!_id) {
+      const insertedTransaction = {
+        ...newTransaction,
+        year: Number(newTransaction.yearMonthDay.substring(0, 4)),
+        month: Number(newTransaction.yearMonthDay.substring(5, 7)),
+        day: Number(newTransaction.yearMonthDay.substring(8, 10)),
+      }
+      const { data } = await api.post(`${RESOURCE}`, insertedTransaction);
+      const newTransactions = [...transactions, data.transaction];
+      newTransactions.sort((a, b) =>  a.yearMonthDay.localeCompare(b.yearMonthDay));
+      setTransactions(newTransactions);
+      setNewTransaction(false);
+    } else {
+      const editedTransaction = {
+        ...newTransaction,
+        year: Number(newTransaction.yearMonthDay.substring(0, 4)),
+        month: Number(newTransaction.yearMonthDay.substring(5, 7)),
+        day: Number(newTransaction.yearMonthDay.substring(8, 10)),
+      }
+      await api.put(`${RESOURCE}/${_id}`, editedTransaction);
+      const newTransactions = [...transactions];
+      const index = newTransactions.findIndex(transaction => {
+        return transaction._id === editedTransaction._id;
+      });
+      newTransactions[index] = editedTransaction;
+      setTransactions(newTransactions);
+      setSelectedTransaction(null);
     }
-    api.put(`${RESOURCE}/${_id}`, editedTransaction);
-    const newTransactions = [...transactions];
-    const index = newTransactions.findIndex(transaction => {
-      return transaction._id === editedTransaction._id;
-    })
-    newTransactions[index] = editedTransaction;
-    setTransactions(newTransactions);
-    setSelectedTransaction(null);
+
+
   };
 
   const handleNewTransaction = () => {
