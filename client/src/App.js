@@ -113,7 +113,7 @@ export default function App() {
         day: Number(newTransaction.yearMonthDay.substring(8, 10)),
       }
       const { data } = await api.post(`${RESOURCE}`, insertedTransaction);
-      const newTransactions = [...transactions, data.transaction];
+      const newTransactions = [...transactions, data];
       newTransactions.sort((a, b) =>  a.yearMonthDay.localeCompare(b.yearMonthDay));
       setTransactions(newTransactions);
       setNewTransaction(false);

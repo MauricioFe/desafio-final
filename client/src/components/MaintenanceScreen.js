@@ -30,7 +30,7 @@ export default function MaintenanceScreen({ transaction, onCancel, onSave }) {
     }, [transaction])
 
     const handleDescriptionChange = (event) => {
-        const newDescription = event.target.value.trim();
+        const newDescription = event.target.value;
         setDescription(newDescription);
     };
     const handleValueChange = (event) => {
@@ -38,7 +38,7 @@ export default function MaintenanceScreen({ transaction, onCancel, onSave }) {
         setValue(newValue);
     };
     const handleCategoryChange = (event) => {
-        const newCategory = +event.target.value;
+        const newCategory = event.target.value;
         setCategory(newCategory);
     };
     const handleDateChange = (event) => {
